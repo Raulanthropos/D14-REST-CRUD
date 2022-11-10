@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D14 — REST & CRUD</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Welcome!</h1>
+          <p class="lead">By clicking on the button below, you will gain access to a list of products to choose from.</p>
+          <button class="btn btn-primary" id="welcoming-button">Load Products</button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+      <ul class="list-group d-flex justify-content-between col-6">
+  
+      </ul>
+    </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+crossorigin="anonymous"></script>
+<script>
+    
+const options = {
+headers: {
+"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZjY1N2Q0YmUzZDAwMTU4NDYwMGQiLCJpYXQiOjE2NjgwODUzMzUsImV4cCI6MTY2OTI5NDkzNX0.Gr11ODEGnFQLDHzWp7kIa-hafK6XaSswM75muzNXr5o"
+}
+}
+
+const list = document.querySelector("ul");
+
+const initialization = async() => {
+let product = await fetch("https://striveschool-api.herokuapp.com/api/product/", options)
+let consumedProduct = await product.json();
+const nokias = await consumedProduct.map(element => {
+        const listItem = document.createElement("li");
+        listItem.classList.add("list-group-item");
+        listItem.innerHTML = `<h3>${element.name}</h3>` + `<img src="${element.imageUrl}" style="width: 80%"/>` + `<h4>${element.price}€</h4` + `<button type="button" class="btn btn-secondary d-flex justify-self-end add-to-cart">Add to cart 🛒</button>` + `<a href="${element.imageUrl}">See details</a>`;
+        list.appendChild(listItem);
+})
+}
+    const welcomingButton = document.getElementById("welcoming-button");
+    welcomingButton.addEventListener('click', initialization);
+    </script>
+</body>
+</html>
